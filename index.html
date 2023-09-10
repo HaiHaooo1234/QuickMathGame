@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Math</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300&family=Kanit:wght@300&family=Open+Sans:wght@300&family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300&display=swap" rel="stylesheet">    
+    <style>
+        html {
+            background-image: url(./Bg.jpeg);
+            font-family: 'IBM Plex Sans Thai', sans-serif;
+            font-family: 'Kanit', sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container_score {
+        display: flex;
+        justify-content: end;
+        margin-right: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        
+            gap: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        
+            margin-top: 50px;
+            padding: 20px;
+            width: 500px;
+            border: 1px solid black;
+        }
+        .container_ans {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: end;
+            justify-content: space-around;
+        
+            padding: 20px;
+            width: 500px;
+            border: 1px solid black;
+        }
+
+        .box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ans {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container_score" style="color: aliceblue;">
+        <div class="score">
+            <h2 id="point"></h2>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <h1 style="color: aliceblue;">เกมคณิตคิดเลขเร็ว!</h1>
+            <div class="main">
+                <div class="box" style="background-color: aliceblue; width: 150px; height: 30px;     border: 1px solid black;
+                ">
+                    <p id="leftBox" style="text-align: center; "></p>
+                </div>
+
+                <div class="box" style="width: 30px; height: 30px;  ">
+                    <p id="operator" style="text-align: center; color: aliceblue; font-size: 28px; "></p>
+                </div>
+
+                <div class="box" style="background-color: aliceblue; width: 150px; height: 30px;     border: 1px solid black;
+                ">
+                    <p id="rightBox" style="text-align: center; "></p>
+                </div>
+
+                
+            </div>
+        </div>
+
+        <div class="container_ans">
+            <div class="ans">
+                <div style="color: aliceblue; font-weight: 600;">คำตอบของคุณ คือ</div>
+                <div class="box"><input style="background-color: aliceblue; width: 200px; height: 30px; border: 4px double black;" id="answer">
+                </div>
+            </div>
+            <button id="submit" style="width: 500px; background-color: #28E20F; color: aliceblue; border-radius: 10px; font-weight: 600; cursor: pointer;" >ส่งคำตอบ</button>
+        </div>
+
+        <div>
+            <h1 id="check"></h1>
+        </div>
+
+    </div>
+
+    <script>
+        const leftBox = document.getElementById('leftBox');
+        const rightBox = document.getElementById('rightBox');
+        const operator = document.getElementById('operator');
+
+        const answerElement = document.getElementById('answer');
+        const submitButton = document.getElementById('submit');
+        
+        const check = document.getElementById('check');
+        const point = document.getElementById('point');
+
+        let answer, leftnumber, rightnumber, count = 0;
+        let operation, checked
+
+                    point.textContent = 'คะแนน ' + count;
+                    function randomnumber() {
+                        leftnumber = Math.floor(Math.random() * 100 + 1);
+                        rightnumber = Math.floor(Math.random() * 100 + 1);
+                        leftBox.textContent = leftnumber;
+                        rightBox.textContent = rightnumber;
+                        answer = leftnumber + rightnumber;
+                        console.log(answer)
+                    }
+                    randomnumber();
+                    while (leftnumber <= rightnumber) {
+                        randomnumber();
+                    }
+
+                    function randomoperator() {
+                        operation = Math.floor(Math.random() * 4+1);
+                        if (operation==1) {
+                            operator.textContent = "+";
+                        }
+                        else if (operation==2) {
+                            operator.textContent = "-";
+                        }
+                        else if (operation==3) {
+                            operator.textContent = "x";
+                        }
+                        else if (operation==4) {
+                            operator.textContent = "/";
+                        }
+                    }
+                    randomoperator();
+
+                    answerElement.addEventListener("keypress", function (event) {
+                    
+                    if (event.key === "Enter") {
+
+                    switch (operation) {
+                        case 1:
+                            answer = leftnumber + rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                check.textContent = answer + ' เป็นคำตอบถูกต้อง!';
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                check.textContent = 'คำตอบผิด! ลองอีกครั้ง';
+                            }
+                            answerElement.value = null;
+                            break;
+                        case 2:
+                            answer = leftnumber - rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                check.textContent = answer + ' เป็นคำตอบถูกต้อง!';
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                check.textContent = 'คำตอบผิด! ลองอีกครั้ง';
+                            }
+                            answerElement.value = null;
+                            break;
+                        case 3:
+                            answer = leftnumber * rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                check.textContent = answer + ' เป็นคำตอบถูกต้อง!';
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                check.textContent = 'คำตอบผิด! ลองอีกครั้ง';
+                            }
+                            answerElement.value = null;
+                            break;
+                        case 4:
+                            answer = leftnumber / rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                check.textContent = answer + ' เป็นคำตอบถูกต้อง!';
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                check.textContent = 'คำตอบผิด! ลองอีกครั้ง';
+                            }
+                            answerElement.value = null;
+                            break;    
+                    }
+                }
+            });
+
+            submitButton.addEventListener('click', () => {
+                    switch (operation) {
+                        case 1:
+                            answer = leftnumber + rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                alert(answer + ' เป็นคำตอบถูกต้อง!');
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                alert( ' คำตอบผิด! ลองอีกครั้ง');
+                            }
+                            answerElement.value = null;
+                            break;
+                        case 2:
+                            answer = leftnumber - rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                alert(answer + ' เป็นคำตอบถูกต้อง!');
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                alert(' คำตอบผิด! ลองอีกครั้ง');
+                            }
+                            answerElement.value = null;
+                            break;
+                        case 3:
+                            answer = leftnumber * rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                alert(answer + ' เป็นคำตอบถูกต้อง!');
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                alert(' คำตอบผิด! ลองอีกครั้ง');
+                            }
+                            answerElement.value = null;
+                            break;
+                        case 4:
+                            answer = leftnumber / rightnumber;
+                            console.log(Number(Math.floor(answer)));
+                            if (parseInt(answerElement.value) === Number(Math.floor(answer))) {
+                                ++count
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "rgb(106, 233, 106)";
+                                alert(answer + ' เป็นคำตอบถูกต้อง!');
+                            } else {
+                                point.textContent = 'คะแนน ' + count;
+                                check.style.color = "red";
+                                alert(' คำตอบผิด! ลองอีกครั้ง');
+                            }
+                            answerElement.value = null;
+                            break;    
+                    }
+
+                randomnumber();
+                while (leftnumber <= rightnumber) {
+                    randomnumber();
+                }
+                randomoperator();
+            });
+
+    </script>
+</body>
+</html>
